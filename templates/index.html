@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Rasga o Fole</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #D99F7E;
+      text-align: center;
+      padding: 20px;
+    }
+h1 {
+  color: white;
+  padding: 8px 50px;
+  background: #5545BF;
+  text-align: center;
+  width: fit-content;
+  border-radius: 20px;
+  margin: 0px auto 10px;
+  font-size: 60px;
+}
+
+h2 {
+  color: white;
+  padding: 8px 15px;
+  background: #5545BF;
+  text-align: center;
+  width: fit-content;
+  border-radius: 20px;
+  margin: 0 auto 60px;
+
+}
+p {
+  color: black;
+  margin: 0 auto;
+  font-weight: bold;
+  font-size: 20px;
+}
+    #buttons-container {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      max-width: 500px;
+      margin: 0 auto;
+    }
+    .music-button {
+      padding: 24px 80px;
+      background-color: #5545BF;
+      border: #3B5770;
+      border-radius: 15px;
+      color: white;
+      font-weight: bold;
+      font-size: 16px;
+      cursor: pointer;
+
+    }
+    audio {
+      margin-top: 20px;
+      width: 80%;
+    }
+  </style>
+</head>
+<body>
+  <img src="static\image\sanfona.png" alt="sanfona" width="200" style="margin-top: -80px">
+  <h1>RASGA O FOLE</h1>
+  <h2>A sanfona para a sua quadrilha</h2>
+  <p>Quadrilha Junina Semear</p>
+  <div id="buttons-container"></div>
+  <audio id="audio-player" controls class="hidden"></audio>
+
+  <script>
+    const buttonsContainer = document.getElementById('buttons-container');
+    const audioPlayer = document.getElementById('audio-player');
+    let currentTrack = null;
+    let isPaused = false;
+    let lastClickTime = 0;
+
+    const tracks = [
+      { name: "01 - ABOIO", src: "static/musics/01 - ABOIO.mp3" },
+      { name: "02 - PEGA O BOI CHICO", src: "static/musics/02 - QUERO VER - LUIZ GONZAGA.mp3" },
+      { name: "03 - CAVALEIRO ALADO", src: "static/musics/03 - CAVALEIRO ALADO  - FAGNER.mp3" },
+      { name: "04 - QUADRILHÃO", src: "static/musics/04 - QUADRILHAO.mp3" },
+      { name: "05 - ACIDENTE", src: "static/musics/05 - ACIDENTE.mp3" },
+      { name: "06 - MARCADOR", src: "static/musics/marcador.mp3" },
+      { name: "07 - CASAMENTO", src: "static/musics/07 - CASAMENTO.mp3" },
+      { name: "08 - INSTANTE FELIZ", src: "static/musics/08 - INSTANTE FELIZ.mp3" },
+      { name: "09 - COSTUMES DO NORDESTE", src: "static/musics/09 - COSTUME DO NORDESTE.mp3" },
+      { name: "10 - CAVALEIROS DO CÉU", src: "static/musics/10 - CAVALEIROS DO CEU.mp3" }
+    ];
+
+    function togglePlay(track) {
+      const now = Date.now();
+      const doubleClick = now - lastClickTime < 400;
+      lastClickTime = now;
+
+      if (currentTrack !== track) {
+        audioPlayer.src = track.src;
+        audioPlayer.play();
+        currentTrack = track;
+        isPaused = false;
+      } else {
+        if (doubleClick) {
+          audioPlayer.currentTime = 0;
+          audioPlayer.play();
+          isPaused = false;
+        } else {
+          if (!isPaused) {
+            audioPlayer.pause();
+            isPaused = true;
+          } else {
+            audioPlayer.play();
+            isPaused = false;
+          }
+        }
+      }
+    }
+
+    function renderButtons() {
+      buttonsContainer.innerHTML = '';
+      tracks.forEach(track => {
+        const btn = document.createElement('button');
+        btn.innerText = track.name;
+        btn.className = 'music-button';
+        btn.onclick = () => togglePlay(track);
+        buttonsContainer.appendChild(btn);
+      });
+    }
+
+    renderButtons();
+  </script>
+</body>
+</html>
